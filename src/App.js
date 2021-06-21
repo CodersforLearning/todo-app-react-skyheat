@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import TodoItems from "./ToDoItems";
 import "./toDoList.css";
  
@@ -7,11 +7,15 @@ class TodoList extends Component {
     super(props);
 
     this.state = {
-      items: []
+      items: [],
+      completeItems: [],
+      title: "click here",
     };
 
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
+    this.completeItem = this.completeItem.bind(this);
   }
   
   ///////////////
@@ -22,7 +26,8 @@ class TodoList extends Component {
     if (this._inputElement.value !== "") {
       var newItem = {
         text: this._inputElement.value,
-        key: Date.now()
+        key: Date.now(),
+        class: "hi"
       };
    
       this.setState((prevState) => {
@@ -49,6 +54,44 @@ class TodoList extends Component {
     });
   }
 
+
+  changeTitle(e) {
+    if (this._titleElement.value !== "") {
+      console.log(this._titleElement.value)
+      this.setState({ title: this._titleElement.value });
+    }
+    
+    //this.setState({ title: this.titleElement.value });
+  };
+  completeItem(key) {
+ // completeItem(item) {
+    /*
+    console.log(item.key)
+    console.log(this.state.items)
+    console.log(this.state.items.key)
+    if(item.key == this.state.items.key)  {
+      console.log(item.key)
+    }*/
+    //console.log(item)
+    //item.class = "doneList"
+    //this.setState({className: "hello"});
+    //console.log(item)
+    //console.log(this.text)
+
+    var filteredItems = this.state.items.filter(function (item) {
+      if (item.key === key)   {
+        console.log("test")
+        item.class = "doneList"
+        return (item.key === key);
+      }
+      return (item.key !== key);
+    });
+   
+    this.setState({
+      items: filteredItems
+    });
+  }
+
   ////////////
   // Render //
   ////////////
@@ -57,6 +100,8 @@ class TodoList extends Component {
     return (
       <div className="todoListMain">
         <div className="header">
+          <h1 className="listTitle" onClick={this.changeTitle}>{this.state.title}</h1>
+          <input className="listTitleEdit" ref={(a) => this._titleElement = a} placeholder={this.state.title}></input>
           <form onSubmit={this.addItem}>
             <input ref={(a) => this._inputElement = a} 
               placeholder="enter task">
@@ -65,7 +110,8 @@ class TodoList extends Component {
           </form>
         </div>
         <TodoItems entries={this.state.items}
-                    delete={this.deleteItem}/>
+                    delete={this.deleteItem}
+                    complete={this.completeItem}/>
       </div>
     );
   }

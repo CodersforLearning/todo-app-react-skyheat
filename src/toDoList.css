@@ -40,3 +40,32 @@
 ul.theList {
   padding: 0;
 }
+/*
+.toDoList {
+  display: none;
+}
+*/
+.addNewList {
+  display:inline-block;
+  width:300px;
+  height:300px;
+  border:1px dotted black;
+}
+
+a {
+  text-decoration: none;
+}
+
+.plusSign {
+  text-align: center;
+  font-size: 900%;
+}
+
+.doneList {
+  background-color: green !important;
+}
+
+/*
+.listTitleEdit  {
+  display: none;
+}*/
