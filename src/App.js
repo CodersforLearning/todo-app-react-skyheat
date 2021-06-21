@@ -81,7 +81,13 @@ class TodoList extends Component {
     var filteredItems = this.state.items.filter(function (item) {
       if (item.key === key)   {
         console.log("test")
-        item.class = "doneList"
+        if (item.class != "doneList")  {
+          item.class = "doneList"
+        }
+        else{
+          item.class = ""
+        }
+        
         return (item.key === key);
       }
       return (item.key !== key);
