@@ -10,6 +10,7 @@ class TodoList extends Component {
       items: [],
       completeItems: [],
       title: "click here",
+      edit: false
     };
 
     this.addItem = this.addItem.bind(this);
@@ -56,13 +57,33 @@ class TodoList extends Component {
 
 
   changeTitle(e) {
-    if (this._titleElement.value !== "") {
+    this.setState({
+      edit: true
+    })
+    //console.log(this._titleElement.value)
+    //return <input className="listTitleEdit" ref={(a) => this._titleElement = a} placeholder={this.state.title}></input>
+    /*if (this._titleElement.value !== "") {
       console.log(this._titleElement.value)
       this.setState({ title: this._titleElement.value });
-    }
+    }*/
     
     //this.setState({ title: this.titleElement.value });
   };
+
+  handleKeyPress = (event) => {
+    if(event.key === 'Enter'){
+      console.log('enter press here! ')
+      if (this._titleElement.value !== "") {
+        console.log(this._titleElement.value)
+        this.setState({ title: this._titleElement.value });
+      }
+      this.setState({
+        edit: false
+      })
+      
+    }
+  }
+
   completeItem(key) {
  // completeItem(item) {
     /*
@@ -96,6 +117,7 @@ class TodoList extends Component {
     this.setState({
       items: filteredItems
     });
+
   }
 
   ////////////
@@ -103,23 +125,50 @@ class TodoList extends Component {
   ////////////
 
   render() {
-    return (
-      <div className="todoListMain">
-        <div className="header">
-          <h1 className="listTitle" onClick={this.changeTitle}>{this.state.title}</h1>
-          <input className="listTitleEdit" ref={(a) => this._titleElement = a} placeholder={this.state.title}></input>
-          <form onSubmit={this.addItem}>
-            <input ref={(a) => this._inputElement = a} 
-              placeholder="enter task">
-            </input>
-            <button type="submit">add</button>
-          </form>
+    if(this.state.edit) {
+      return (
+        <div className="todoListMain">
+          <div className="header">
+            <input className="listTitleEdit" ref={(a) => this._titleElement = a} placeholder={this.state.title} onKeyPress={this.handleKeyPress}></input>
+
+            <p>Add tasks by using the input field below</p>
+            <p>Click once to mark task as complete</p>
+            <p>Click twice to delete task</p>
+            <form onSubmit={this.addItem}>
+              <input ref={(a) => this._inputElement = a} 
+                placeholder="enter task">
+              </input>
+              <button type="submit">add</button>
+            </form>
+          </div>
+          <TodoItems entries={this.state.items}
+                      delete={this.deleteItem}
+                      complete={this.completeItem}/>
         </div>
-        <TodoItems entries={this.state.items}
-                    delete={this.deleteItem}
-                    complete={this.completeItem}/>
-      </div>
-    );
+        );
+    }
+    else{
+      return (
+        <div className="todoListMain">
+          <div className="header">
+            <h1 className="listTitle" onClick={this.changeTitle}>{this.state.title}</h1>
+            <p>Add tasks by using the input field below</p>
+            <p>Click once to mark task as complete</p>
+            <p>Click twice to delete task</p>
+            <form onSubmit={this.addItem}>
+              <input ref={(a) => this._inputElement = a} 
+                placeholder="enter task">
+              </input>
+              <button type="submit">add</button>
+            </form>
+          </div>
+          <TodoItems entries={this.state.items}
+                      delete={this.deleteItem}
+                      complete={this.completeItem}/>
+        </div>
+      );
+    }
+    
   }
 }
  
