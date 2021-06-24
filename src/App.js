@@ -1,7 +1,12 @@
 import React, { Component, useState } from "react";
+import { Container } from "react-bootstrap";
+import { AuthProvider } from "./context/AuthContext";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Signup from "./Signup";
 import TodoItems from "./ToDoItems";
 import "./toDoList.css";
- 
+
+
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +14,7 @@ class TodoList extends Component {
     this.state = {
       items: [],
       completeItems: [],
-      title: "click here",
+      title: "Notes #1",
       edit: false
     };
 
@@ -60,19 +65,10 @@ class TodoList extends Component {
     this.setState({
       edit: true
     })
-    //console.log(this._titleElement.value)
-    //return <input className="listTitleEdit" ref={(a) => this._titleElement = a} placeholder={this.state.title}></input>
-    /*if (this._titleElement.value !== "") {
-      console.log(this._titleElement.value)
-      this.setState({ title: this._titleElement.value });
-    }*/
-    
-    //this.setState({ title: this.titleElement.value });
   };
 
   handleKeyPress = (event) => {
     if(event.key === 'Enter'){
-      console.log('enter press here! ')
       if (this._titleElement.value !== "") {
         console.log(this._titleElement.value)
         this.setState({ title: this._titleElement.value });
@@ -85,20 +81,6 @@ class TodoList extends Component {
   }
 
   completeItem(key) {
- // completeItem(item) {
-    /*
-    console.log(item.key)
-    console.log(this.state.items)
-    console.log(this.state.items.key)
-    if(item.key == this.state.items.key)  {
-      console.log(item.key)
-    }*/
-    //console.log(item)
-    //item.class = "doneList"
-    //this.setState({className: "hello"});
-    //console.log(item)
-    //console.log(this.text)
-
     var filteredItems = this.state.items.filter(function (item) {
       if (item.key === key)   {
         console.log("test")
@@ -130,10 +112,6 @@ class TodoList extends Component {
         <div className="todoListMain">
           <div className="header">
             <input className="listTitleEdit" ref={(a) => this._titleElement = a} placeholder={this.state.title} onKeyPress={this.handleKeyPress}></input>
-
-            <p>Add tasks by using the input field below</p>
-            <p>Click once to mark task as complete</p>
-            <p>Click twice to delete task</p>
             <form onSubmit={this.addItem}>
               <input ref={(a) => this._inputElement = a} 
                 placeholder="enter task">
@@ -149,12 +127,21 @@ class TodoList extends Component {
     }
     else{
       return (
-        <div className="todoListMain">
+          <div className="todoListMain">
+          <Container className="d-flex align-items-center justify-content-center" style={{minheight:"100vh"}}>
+            <div className="w-100" style={{ maWidth: "400px"}}>
+              <Router>
+                <AuthProvider>
+                  <Switch>
+                    <Route path="/signup" component={Signup}/>
+                  </Switch>
+                </AuthProvider>
+              </Router>
+            </div>
+            
+          </Container>
           <div className="header">
             <h1 className="listTitle" onClick={this.changeTitle}>{this.state.title}</h1>
-            <p>Add tasks by using the input field below</p>
-            <p>Click once to mark task as complete</p>
-            <p>Click twice to delete task</p>
             <form onSubmit={this.addItem}>
               <input ref={(a) => this._inputElement = a} 
                 placeholder="enter task">
@@ -168,7 +155,7 @@ class TodoList extends Component {
         </div>
       );
     }
-    
+  
   }
 }
  
