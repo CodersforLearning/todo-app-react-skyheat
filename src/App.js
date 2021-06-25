@@ -1,9 +1,10 @@
 import React, { Component, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Card, Button, Alert } from "react-bootstrap";
 import { AuthProvider } from "./context/AuthContext";
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Link, useHistory, BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Signup from "./Signup";
 import TodoItems from "./ToDoItems";
+import Dashboard from "./Dashboard";
 import "./toDoList.css";
 
 
@@ -110,6 +111,19 @@ class TodoList extends Component {
     if(this.state.edit) {
       return (
         <div className="todoListMain">
+          <Link exact path="/" component={Dashboard}></Link>
+          <Container className="d-flex align-items-center justify-content-center" style={{minheight:"100vh"}}>
+            <div className="w-100" style={{ maWidth: "400px"}}>
+              <Router>
+                <AuthProvider>
+                  <Switch>
+                    <Route path="/signup" component={Signup}/>
+                  </Switch>
+                </AuthProvider>
+              </Router>
+            </div>
+            
+          </Container>
           <div className="header">
             <input className="listTitleEdit" ref={(a) => this._titleElement = a} placeholder={this.state.title} onKeyPress={this.handleKeyPress}></input>
             <form onSubmit={this.addItem}>
@@ -128,6 +142,7 @@ class TodoList extends Component {
     else{
       return (
           <div className="todoListMain">
+          <Link exact path="/" component={Dashboard}></Link>
           <Container className="d-flex align-items-center justify-content-center" style={{minheight:"100vh"}}>
             <div className="w-100" style={{ maWidth: "400px"}}>
               <Router>

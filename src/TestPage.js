@@ -4,6 +4,11 @@ import { AuthProvider } from "./context/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Signup from "./Signup";
 import TodoList from "./App";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
+import PrivateRoute from "./PrivateRoute"
+import ForgotPassword from "./ForgotPassword";
+import UpdateProfile from "./UpdateProfile";
 
 export default function TestPage() {
     return (
@@ -12,8 +17,12 @@ export default function TestPage() {
               <Router>
                 <AuthProvider>
                   <Switch>
-                    <Route exact path="/" component={TodoList}/>
+                    <PrivateRoute exact path="/" component={Dashboard}/>
+                    <PrivateRoute exact path="/updateProfile" component={UpdateProfile}/>
+                    <Route exact path="/note" component={TodoList}/>
                     <Route path="/signup" component={Signup}/>
+                    <Route path="/login" component={Login} />
+                    <Route path="/forgotPassword" component={ForgotPassword}/>
                   </Switch>
                 </AuthProvider>
               </Router>
